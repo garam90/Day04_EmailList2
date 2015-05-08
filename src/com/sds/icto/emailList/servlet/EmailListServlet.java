@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sds.icto.emailList.action.ActionFactory;
 import com.sds.icto.emailList.action.IndexAction;
 import com.sds.icto.emailList.action.formAction;
 import com.sds.icto.emailList.action.insertAction;
@@ -36,15 +37,10 @@ public class EmailListServlet extends HttpServlet {
 
 		request.setCharacterEncoding("utf-8");
 		String action = request.getParameter("action");
-		Action act = null;
+		
+		ActionFactory af = ActionFactory.getInstance();
+		Action act = af.getAction(action);
 		try {
-			if ("form".equals(action)) {
-				act = new formAction();
-			} else if ("insert".equals(action)) {
-				act = new insertAction();
-			} else {
-				act = new IndexAction();
-			}
 			act.execute(request, response);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
